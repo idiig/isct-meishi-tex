@@ -5,8 +5,6 @@
 [!IMPORTANT]
 本项目 fork 自 [[https://github.com/yamagen/meishi-tex][yamagen/meishi-tex]]。
 #+end_quote
-
-* 使い方
 =TeX= 環境が整っている場合、個人情報を例の中を参照しながら [[main.tex]] にい
 れ、コンパイルしてください。使用は自己責任でお願いします。
 
@@ -34,7 +32,13 @@
 #+end_src
 
 * 最小実行環境
-[[https://nixos.org/][Nix]] 環境が整っている場合、以下のコマンドで最小限の実行環境を構築できます。
+[[https://nixos.org/][Nix]] 環境が整っている場合、以下のコマンドで最小限の実行環境を構築できま
+す。
 #+begin_src shell
   nix develop --impure --extra-experimental-features nix-command --extra-experimental-features flakes
+#+end_src
+
+* 実行
+#+begin_src shell
+  latexmk main
 #+end_src
