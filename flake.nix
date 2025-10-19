@@ -41,29 +41,16 @@
                   haranoaji     # Japanese font
                   pxrubrica;    # Japanese ruby annotation
               })
-              
-              # fonts
-              charis-sil
-              
-              # tools
-              inkscape
-              ghostscript
             ];
             
             shellHook = ''
+              export OSFONTDIR="${pkgs.charis-sil}/share/fonts/truetype" # Set ipa font directory for LaTeX
+
               echo "🎓 Meishi Environment Ready!"
-              echo "📦 Added catchfile and ifplatform support"
-              echo "🖼️  SVG support: inkscape + ghostscript included"
-              echo "🔤 Enhanced font support for Unicode box characters"
               echo ""
               echo "Usage:"
               echo "  latexmk main.tex    # automatically compile with latexmk"
               echo "  lualatex -shell-escape main.tex  # compile with lualatex and shell escape"
-              echo ""
-              
-              echo "Tools available:"
-              echo "  Inkscape: $(inkscape --version 2>/dev/null | head -1 || echo 'Not found')"
-              echo "  Shell escape: Enabled in latexmkrc"
             '';
           };
         }
