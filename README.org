@@ -1,0 +1,39 @@
+#+title: 汎用の名刺テンプレート
+#+author: idiig
+#+date: 2025:10:19
+#+begin_quote
+[!IMPORTANT]
+本项目 fork 自 [[https://github.com/yamagen/meishi-tex][yamagen/meishi-tex]]。
+#+end_quote
+
+* 使い方
+=TeX= 環境が整っている場合、個人情報を例の中を参照しながら [[main.tex]] にい
+れ、コンパイルしてください。使用は自己責任でお願いします。
+
+* カスタマイズ
+#+begin_src latex
+  \usepackage[%
+  frame,      % 枠あり
+  decoration  % 飾りあり
+  ]{meishi}
+#+end_src
+
+* 例
+#+begin_src latex
+  \setLogo{\includegraphics[height=11mm]{images/sciencetokyo.pdf}}{\includegraphics[height=11mm]{images/sciencetokyo.pdf}}
+  \setName{\iparuby{\LaTeX}{ˈlɑːtɛx}\,\iparuby{Meishi}{meɕi}}{\ruby{東工大　太郎}{トウ|コウ|ダイ|　|タ|ロウ}}
+  \setPosition{JSPS doctoral\\fellow (DC2)}{JSPS\\特別研究員（DC2）}
+  \setDegree{Ph.D. in ○○○○}{博士（○○）}
+  \setUniversity{Institute of Science Tokyo}{東京科学大学}
+  \setOrganization{Institute of Science Tokyo}{東京科学大学}{School of Environment and Society}{環境・社会理工学院}{Department of ○○○○}{ほげほげ系}
+  \setAddress{W0-000, 2-12-1 Ookayama, Meguro, Tokyo 152-0000 Japan}{〒152-0000 東京都目黒区大岡山 2-12-1 W0-000}
+  \setEmail{aaaa.a.aa@m.titech.ac.jp}
+  \setPhone{00-0000-0000}
+  % optional
+  \setDecoration{\includegraphics[width=91mm]{images/decoration_en.pdf}}{\includegraphics[width=91mm]{images/decoration_ja.pdf}}
+#+end_src
+
+* 最小実行環境
+#+begin_src shell
+  nix develop --impure --extra-experimental-features nix-command --extra-experimental-features flakes
+#+end_src

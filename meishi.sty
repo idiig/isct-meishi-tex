@@ -1,0 +1,449 @@
+% meishi.sty
+% Meishi Style Package
+% Version 1.0
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{meishi}[2025/01/18 v1.0 Business Card Package]
+
+% =============== Required Packages ===============
+\RequirePackage{graphicx}
+\RequirePackage{tikz}
+\RequirePackage{array}
+\RequirePackage{pxrubrica}
+\RequirePackage{fontspec}
+\RequirePackage{ifthen}
+
+% =============== Font Setup ===============
+\newfontfamily\ipafont{Charis SIL}
+\newcommand{\iparuby}[2]{%
+  \ruby{{#1}}{{\ipafont #2}}%
+}
+
+% =============== Switches ===============
+\newif\if@bcDecoration
+\newif\if@bcFrame
+\newif\if@bcCropmarks
+
+% Package options
+\DeclareOption{decoration}{\@bcDecorationtrue}
+\DeclareOption{nodecoration}{\@bcDecorationfalse}
+\DeclareOption{frame}{\@bcFrametrue}
+\DeclareOption{noframe}{\@bcFramefalse}
+
+% Default settings
+\@bcDecorationfalse  % decoration is optional, default off
+\@bcFrametrue
+\@bcCropmarkstrue    % cropmarks is mandatory, always on
+
+\ProcessOptions\relax
+
+% =============== Dimensions ===============
+\newlength{\bccardwidth}
+\newlength{\bccardheight}
+\newlength{\bclogoheight}
+\newlength{\bclogowidth}
+\newlength{\bcorgwidth}
+\newlength{\bctotaltopwidth}
+
+% Default card dimensions
+\setlength{\bccardwidth}{91mm}
+\setlength{\bccardheight}{55mm}
+\setlength{\bclogoheight}{11mm}
+
+% =============== Content Storage ===============
+% Logo
+\def\bcLogoMain{}
+\def\bcLogoMainJa{}
+
+% Personal Information
+\def\bcPosition{}
+\def\bcPositionJa{}
+\def\bcName{}
+\def\bcNameJa{}
+\def\bcDegree{}
+\def\bcDegreeJa{}
+\def\bcUniversity{}
+\def\bcUniversityJa{}
+
+% Organization
+\def\bcOrgMain{}
+\def\bcOrgMainJa{}
+\def\bcOrgSchool{}
+\def\bcOrgSchoolJa{}
+\def\bcOrgDept{}
+\def\bcOrgDeptJa{}
+
+% Contact
+\def\bcAddress{}
+\def\bcAddressJa{}
+\def\bcEmail{}
+\def\bcPhone{}
+
+% Decoration
+\def\bcDecoration{}
+\def\bcDecorationJa{}
+
+% =============== User Commands ===============
+% Set logo (English, Japanese)
+\newcommand{\setLogo}[2]{%
+  \def\bcLogoMain{#1}%
+  \def\bcLogoMainJa{#2}%
+}
+
+% Set personal information (English, Japanese)
+\newcommand{\setPosition}[2]{%
+  \def\bcPosition{#1}%
+  \def\bcPositionJa{#2}%
+}
+
+\newcommand{\setName}[2]{%
+  \def\bcName{#1}%
+  \def\bcNameJa{#2}%
+}
+
+\newcommand{\setDegree}[2]{%
+  \def\bcDegree{#1}%
+  \def\bcDegreeJa{#2}%
+}
+
+\newcommand{\setUniversity}[2]{%
+  \def\bcUniversity{#1}%
+  \def\bcUniversityJa{#2}%
+}
+
+% Set organization (English parts, Japanese parts)
+\newcommand{\setOrganization}[6]{%
+  \def\bcOrgMain{#1}%
+  \def\bcOrgMainJa{#2}%
+  \def\bcOrgSchool{#3}%
+  \def\bcOrgSchoolJa{#4}%
+  \def\bcOrgDept{#5}%
+  \def\bcOrgDeptJa{#6}%
+}
+
+% Set contact information (English, Japanese)
+\newcommand{\setAddress}[2]{%
+  \def\bcAddress{#1}%
+  \def\bcAddressJa{#2}%
+}
+
+\newcommand{\setEmail}[1]{\def\bcEmail{#1}}
+\newcommand{\setPhone}[1]{\def\bcPhone{#1}}
+
+% Set decoration (English, Japanese)
+\newcommand{\setDecoration}[2]{%
+  \def\bcDecoration{#1}%
+  \def\bcDecorationJa{#2}%
+}
+
+% Enable/disable decoration
+\newcommand{\enableDecoration}{\@bcDecorationtrue}
+\newcommand{\disableDecoration}{\@bcDecorationfalse}
+
+% Enable/disable frame
+\newcommand{\enableFrame}{\@bcFrametrue}
+\newcommand{\disableFrame}{\@bcFramefalse}
+
+% =============== Internal Components ===============
+% TOP Section: Logo and Organization (English version)
+\def\bc@TopSection{%
+  \settowidth{\bclogowidth}{\bcLogoMain}
+  \settowidth{\bcorgwidth}{%
+    \begin{tabular}[c]{@{}l@{}}
+      \bf\large\bcOrgMain\\
+      \tiny\bcOrgSchool\\
+      \tiny\bcOrgDept
+    \end{tabular}%
+  }
+  \setlength{\bctotaltopwidth}{\bclogowidth}
+  \addtolength{\bctotaltopwidth}{3mm}
+  \addtolength{\bctotaltopwidth}{\bcorgwidth}
+  
+  \begin{center}
+    \begin{minipage}[t][13mm][c]{\bctotaltopwidth}
+      \parbox[c]{\bclogowidth}{\centering\bcLogoMain}%
+      \hfill%
+      \parbox[c]{\bcorgwidth}{%
+        \bf\large\bcOrgMain\\[0.5mm]
+        \tiny\bcOrgSchool\\[0mm]
+        \tiny\bcOrgDept
+      }%
+    \end{minipage}
+  \end{center}
+}
+
+% TOP Section: Logo and Organization (Japanese version)
+\def\bc@TopSectionJa{%
+  \settowidth{\bclogowidth}{\bcLogoMainJa}
+  \settowidth{\bcorgwidth}{%
+    \begin{tabular}[c]{@{}l@{}}
+      \bf\large\bcOrgMainJa\\
+      \tiny\bcOrgSchoolJa\\
+      \tiny\bcOrgDeptJa
+    \end{tabular}%
+  }
+  \setlength{\bctotaltopwidth}{\bclogowidth}
+  \addtolength{\bctotaltopwidth}{3mm}
+  \addtolength{\bctotaltopwidth}{\bcorgwidth}
+  
+  \begin{center}
+    \begin{minipage}[t][13mm][c]{\bctotaltopwidth}
+      \parbox[c]{\bclogowidth}{\centering\bcLogoMainJa}%
+      \hfill%
+      \parbox[c]{\bcorgwidth}{%
+        \bf\large\bcOrgMainJa\\[0.5mm]
+        \tiny\bcOrgSchoolJa\\[0mm]
+        \tiny\bcOrgDeptJa
+      }%
+    \end{minipage}
+  \end{center}
+}
+
+% MIDDLE Section: Personal Information (English version)
+\def\bc@MiddleSection{%
+  \begin{minipage}[t][20mm][c]{\bccardwidth}
+    \begin{center}
+       \begin{tabular}[c]{@{}m{20mm}l@{}}
+         \raggedright\scriptsize\bcPosition & {\Large\rmfamily\bcName} \\[-3.3mm]
+          & \scriptsize\bcDegree \\[-3mm]
+          & \scriptsize\bcUniversity
+      \end{tabular}
+    \end{center}
+  \end{minipage}
+}
+
+% MIDDLE Section: Personal Information (Japanese version)
+\def\bc@MiddleSectionJa{%
+  \begin{minipage}[t][20mm][c]{\bccardwidth}
+    \begin{center}
+       \begin{tabular}[c]{@{}m{20mm}l@{}}
+         \raggedright\scriptsize\bcPositionJa & {\Large\rmfamily\bcNameJa} \\[-3.3mm]
+          & \scriptsize\bcDegreeJa \\[-3mm]
+          & \scriptsize\bcUniversityJa
+      \end{tabular}
+    \end{center}
+  \end{minipage}
+}
+
+% BOTTOM Section: Contact Information (English version)
+\def\bc@BottomSection{%
+  \begin{minipage}[t][12mm][t]{\bccardwidth}
+    \footnotesize
+    \centering
+    \begin{tabular}{lr}
+      \multicolumn{2}{c}{\bcAddress}\\
+      Tel:\,\bcPhone & Email:\,\texttt{\bcEmail}
+    \end{tabular}
+  \end{minipage}
+}
+
+% BOTTOM Section: Contact Information (Japanese version)
+\def\bc@BottomSectionJa{%
+  \begin{minipage}[t][12mm][t]{\bccardwidth}
+    \footnotesize
+    \centering
+    \begin{tabular}{lr}
+      \multicolumn{2}{c}{\bcAddressJa}\\
+      Tel:\,\bcPhone & Email:\,\texttt{\bcEmail}
+    \end{tabular}
+  \end{minipage}
+}
+
+% =============== Single Business Card ===============
+% English version
+\def\bc@SingleCard{%
+  \begin{minipage}[t][\bccardheight][t]{\bccardwidth}
+    \vspace{5mm}
+    \bc@TopSection
+    \vspace{-2mm}
+    \bc@MiddleSection
+    \vfill
+    \bc@BottomSection
+  \end{minipage}
+}
+
+% Japanese version
+\def\bc@SingleCardJa{%
+  \begin{minipage}[t][\bccardheight][t]{\bccardwidth}
+    \vspace{5mm}
+    \bc@TopSectionJa
+    \vspace{-2mm}
+    \bc@MiddleSectionJa
+    \vfill
+    \bc@BottomSectionJa
+  \end{minipage}
+}
+
+% =============== Main Commands ===============
+% Generate a single business card (English)
+\newcommand{\makeBusinessCard}{%
+  \begin{tikzpicture}[x=1mm, y=1mm, font=\sffamily]
+    % Optional decoration
+    \if@bcDecoration
+      \ifx\bcDecoration\empty\else
+        \node[anchor=south west, inner sep=0pt] at (0,0) {
+          \bcDecoration
+        };
+      \fi
+    \fi
+    
+    % Place the business card content
+    \node[anchor=south west, inner sep=0pt] at (0,0) {
+      \bc@SingleCard
+    };
+    
+    % Optional frame
+    \if@bcFrame
+      \draw[gray!40,thin] (0,0) rectangle (\bccardwidth,\bccardheight);
+    \fi
+  \end{tikzpicture}
+}
+
+% Generate a single business card (Japanese)
+\newcommand{\makeBusinessCardJa}{%
+  \begin{tikzpicture}[x=1mm, y=1mm, font=\sffamily]
+    % Optional decoration
+    \if@bcDecoration
+      \ifx\bcDecorationJa\empty\else
+        \node[anchor=south west, inner sep=0pt] at (0,0) {
+          \bcDecorationJa
+        };
+      \fi
+    \fi
+    
+    % Place the business card content
+    \node[anchor=south west, inner sep=0pt] at (0,0) {
+      \bc@SingleCardJa
+    };
+    
+    % Optional frame
+    \if@bcFrame
+      \draw[gray!40,thin] (0,0) rectangle (\bccardwidth,\bccardheight);
+    \fi
+  \end{tikzpicture}
+}
+
+% Generate a page of business cards (3x3 grid, English)
+\newcommand{\makeBusinessCardPage}[1][3]{%
+  % #1 = number of columns (default 3)
+  \def\bccols{#1}
+  \def\bcrows{3}% Fixed to 3 rows for standard layout
+  
+  \begin{tikzpicture}[remember picture, overlay, x=1mm, y=1mm, font=\sffamily]
+    \begin{scope}[shift={(current page.center)}, 
+                  xshift=-\dimexpr\bccols\bccardwidth/2\relax, 
+                  yshift=-\dimexpr\bcrows\bccardheight/2\relax]
+    
+    % Generate grid of business cards
+    \foreach \row in {0,...,\numexpr\bcrows-1}{
+      \foreach \col in {0,...,\numexpr\bccols-1}{
+        \begin{scope}[shift={(\col*91,\row*55)}]
+          
+          % Optional decoration
+          \if@bcDecoration
+            \ifx\bcDecoration\empty\else
+              \node[anchor=south west, inner sep=0pt] at (0,0) {
+                \bcDecoration
+              };
+            \fi
+          \fi
+          
+          % Place the business card content
+          \node[anchor=south west, inner sep=0pt] at (0,0) {
+            \bc@SingleCard
+          };
+          
+          % Optional frame
+          \if@bcFrame
+            \draw[gray!40,thin] (0,0) rectangle (\bccardwidth,\bccardheight);
+          \fi
+          
+        \end{scope}
+      }
+    }
+    
+    % Crop marks (mandatory)
+    \if@bcCropmarks
+      % Calculate total width and height
+      \pgfmathsetmacro\totalwidth{\bccols*91}
+      \pgfmathsetmacro\totalheight{\bcrows*55}
+      
+      % Horizontal crop marks
+      \foreach \x in {0,91,...,\totalwidth}{
+        \draw[black,thin] (\x,-10) -- (\x,-5);
+        \draw[black,thin] (\x,\totalheight+10) -- (\x,\totalheight+5);
+      }
+      
+      % Vertical crop marks  
+      \foreach \y in {0,55,...,\totalheight}{
+        \draw[black,thin] (-10,\y) -- (-5,\y);
+        \draw[black,thin] (\totalwidth+10,\y) -- (\totalwidth+5,\y);
+      }
+    \fi
+    
+    \end{scope}
+  \end{tikzpicture}
+}
+
+% Generate a page of business cards (3x3 grid, Japanese)
+\newcommand{\makeBusinessCardPageJa}[1][3]{%
+  % #1 = number of columns (default 3)
+  \def\bccols{#1}
+  \def\bcrows{3}% Fixed to 3 rows for standard layout
+  
+  \begin{tikzpicture}[remember picture, overlay, x=1mm, y=1mm, font=\sffamily]
+    \begin{scope}[shift={(current page.center)}, 
+                  xshift=-\dimexpr\bccols\bccardwidth/2\relax, 
+                  yshift=-\dimexpr\bcrows\bccardheight/2\relax]
+    
+    % Generate grid of business cards
+    \foreach \row in {0,...,\numexpr\bcrows-1}{
+      \foreach \col in {0,...,\numexpr\bccols-1}{
+        \begin{scope}[shift={(\col*91,\row*55)}]
+          
+          % Optional decoration
+          \if@bcDecoration
+            \ifx\bcDecorationJa\empty\else
+              \node[anchor=south west, inner sep=0pt] at (0,0) {
+                \bcDecorationJa
+              };
+            \fi
+          \fi
+          
+          % Place the business card content
+          \node[anchor=south west, inner sep=0pt] at (0,0) {
+            \bc@SingleCardJa
+          };
+          
+          % Optional frame
+          \if@bcFrame
+            \draw[gray!40,thin] (0,0) rectangle (\bccardwidth,\bccardheight);
+          \fi
+          
+        \end{scope}
+      }
+    }
+    
+    % Crop marks (mandatory)
+    \if@bcCropmarks
+      % Calculate total width and height
+      \pgfmathsetmacro\totalwidth{\bccols*91}
+      \pgfmathsetmacro\totalheight{\bcrows*55}
+      
+      % Horizontal crop marks
+      \foreach \x in {0,91,...,\totalwidth}{
+        \draw[black,thin] (\x,-10) -- (\x,-5);
+        \draw[black,thin] (\x,\totalheight+10) -- (\x,\totalheight+5);
+      }
+      
+      % Vertical crop marks  
+      \foreach \y in {0,55,...,\totalheight}{
+        \draw[black,thin] (-10,\y) -- (-5,\y);
+        \draw[black,thin] (\totalwidth+10,\y) -- (\totalwidth+5,\y);
+      }
+    \fi
+    
+    \end{scope}
+  \end{tikzpicture}
+}
+
+\endinput

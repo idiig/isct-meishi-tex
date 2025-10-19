@@ -1,0 +1,28 @@
+\documentclass[landscape]{ltjsarticle}
+\usepackage[%
+    frame,%
+    %decoration%
+]{meishi}
+
+\begin{document}
+
+\setLogo{\includegraphics[height=11mm]{images/sciencetokyo.pdf}}{\includegraphics[height=11mm]{images/sciencetokyo.pdf}}
+\setName{\iparuby{\LaTeX}{ˈlɑːtɛx}\,\iparuby{Meishi}{meɕi}}{\ruby{東工大　太郎}{トウ|コウ|ダイ|　|タ|ロウ}}
+\setPosition{JSPS doctoral\\fellow (DC2)}{JSPS\\特別研究員（DC2）}
+\setDegree{Ph.D. in ○○○○}{博士（○○）}
+\setUniversity{Institute of Science Tokyo}{東京科学大学}
+\setOrganization{Institute of Science Tokyo}{東京科学大学}{School of Environment and Society}{環境・社会理工学院}{Department of ○○○○}{ほげほげ系}
+\setAddress{W0-000, 2-12-1 Ookayama, Meguro, Tokyo 152-0000 Japan}{〒152-0000 東京都目黒区大岡山 2-12-1 W0-000}
+\setEmail{aaaa.a.aa@m.titech.ac.jp}
+\setPhone{00-0000-0000}
+% optional
+\setDecoration{\includegraphics[width=91mm]{images/decoration_en.pdf}}{\includegraphics[width=91mm]{images/decoration_ja.pdf}}
+
+% 表
+\makeBusinessCardPage
+\newpage
+
+% 裏
+\makeBusinessCardPageJa
+
+\end{document}
