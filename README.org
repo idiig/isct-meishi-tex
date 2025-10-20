@@ -5,8 +5,14 @@
 [!IMPORTANT]
 本项目 fork 自 [[https://github.com/yamagen/meishi-tex][yamagen/meishi-tex]]。
 #+end_quote
+
+#+caption: 名刺サンプル
+#+attr_latex: scale=0.75
+#+label: fig:meishi_sample
+[[examples/meishi_sample.pdf]]
+
 =TeX= 環境が整っている場合、個人情報を例の中を参照しながら [[main.tex]] にい
-れ、コンパイルしてください。使用は自己責任でお願いします。
+れ、そのままコンパイルしてください。使用は自己責任でお願いします。
 
 * カスタマイズ
 #+begin_src latex
