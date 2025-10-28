@@ -3,7 +3,7 @@
 #+date: 2025:10:19
 #+begin_quote
 [!IMPORTANT]
-本项目 fork 自 [[https://github.com/yamagen/meishi-tex][yamagen/meishi-tex]]。
+forked from [[https://github.com/yamagen/meishi-tex][yamagen/meishi-tex]]。
 #+end_quote
 
 #+caption: 名刺サンプル
