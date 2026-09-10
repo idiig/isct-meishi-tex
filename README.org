@@ -18,8 +18,24 @@ forked from [[https://github.com/yamagen/meishi-tex][yamagen/meishi-tex]]。
 * カスタマイズ
 #+begin_src latex
   \usepackage[%
-  frame,      % 枠あり
-  decoration  % 飾りあり
+  frame,       % 枠あり
+  decoration,  % 飾りあり
+  oneup        % 1 面付
+  ]{meishi}
+#+end_src
+
+** オプション
+- =frame=: 名刺の外枠を表示します。既定では非表示です。
+- =decoration=: 背景飾りを表示します。既定では非表示です。
+- =oneup=: 1 面付の入稿データを作成します。PDF のページサイズは名刺本体と同じ
+  =91mm x 55mm= になり、裁ち落とし用のトンボは表示されません。
+- =nineup=: 9 面付で出力します。既定の出力形式です。
+
+印刷所へ 1 面付データを入稿する場合は、以下のように =oneup= を指定します。
+
+#+begin_src latex
+  \usepackage[%
+  oneup
   ]{meishi}
 #+end_src
 

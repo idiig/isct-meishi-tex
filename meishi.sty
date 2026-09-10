@@ -22,17 +22,21 @@
 \newif\if@bcDecoration
 \newif\if@bcFrame
 \newif\if@bcCropmarks
+\newif\if@bcOneUp
 
 % Package options
 \DeclareOption{decoration}{\@bcDecorationtrue}
 \DeclareOption{nodecoration}{\@bcDecorationfalse}
 \DeclareOption{frame}{\@bcFrametrue}
 \DeclareOption{noframe}{\@bcFramefalse}
+\DeclareOption{oneup}{\@bcOneUptrue}
+\DeclareOption{nineup}{\@bcOneUpfalse}
 
 % Default settings
 \@bcDecorationfalse  % decoration is optional, default off
 \@bcFramefalse     % frame is optional, default off
-\@bcCropmarkstrue    % cropmarks is mandatory, always on
+\@bcCropmarkstrue    % cropmarks are enabled for imposed sheets
+\@bcOneUpfalse       % 3x3 imposition by default
 
 \ProcessOptions\relax
 
@@ -48,6 +52,29 @@
 \setlength{\bccardwidth}{91mm}
 \setlength{\bccardheight}{55mm}
 \setlength{\bclogoheight}{11mm}
+
+\AtBeginDocument{%
+  \if@bcOneUp
+    \setlength{\paperwidth}{\bccardwidth}%
+    \setlength{\paperheight}{\bccardheight}%
+    \setlength{\textwidth}{\bccardwidth}%
+    \setlength{\textheight}{\bccardheight}%
+    \setlength{\oddsidemargin}{-1in}%
+    \setlength{\evensidemargin}{-1in}%
+    \setlength{\topmargin}{-1in}%
+    \setlength{\headheight}{0pt}%
+    \setlength{\headsep}{0pt}%
+    \setlength{\footskip}{0pt}%
+    \setlength{\parindent}{0pt}%
+    \ifdefined\pdfpagewidth
+      \pdfpagewidth=\paperwidth
+      \pdfpageheight=\paperheight
+    \else
+      \pagewidth=\paperwidth
+      \pageheight=\paperheight
+    \fi
+  \fi
+}
 
 % =============== Content Storage ===============
 % Logo
@@ -142,6 +169,10 @@
 % Enable/disable frame
 \newcommand{\enableFrame}{\@bcFrametrue}
 \newcommand{\disableFrame}{\@bcFramefalse}
+
+% Enable/disable 1-up output
+\newcommand{\enableOneUp}{\@bcOneUptrue}
+\newcommand{\disableOneUp}{\@bcOneUpfalse}
 
 % =============== Internal Components ===============
 % TOP Section: Logo and Organization (English version)
@@ -327,6 +358,10 @@
   % #1 = number of columns (default 3)
   \def\bccols{#1}
   \def\bcrows{3}% Fixed to 3 rows for standard layout
+  \if@bcOneUp
+    \def\bccols{1}
+    \def\bcrows{1}
+  \fi
   
   \begin{tikzpicture}[remember picture, overlay, x=1mm, y=1mm, font=\sffamily]
     \begin{scope}[shift={(current page.center)}, 
@@ -361,8 +396,9 @@
       }
     }
     
-    % Crop marks (mandatory)
+    % Crop marks (disabled for 1-up print data)
     \if@bcCropmarks
+    \if@bcOneUp\else
       % Calculate total width and height
       \pgfmathsetmacro\totalwidth{\bccols*91}
       \pgfmathsetmacro\totalheight{\bcrows*55}
@@ -379,6 +415,7 @@
         \draw[black,thin] (\totalwidth+10,\y) -- (\totalwidth+5,\y);
       }
     \fi
+    \fi
     
     \end{scope}
   \end{tikzpicture}
@@ -389,6 +426,10 @@
   % #1 = number of columns (default 3)
   \def\bccols{#1}
   \def\bcrows{3}% Fixed to 3 rows for standard layout
+  \if@bcOneUp
+    \def\bccols{1}
+    \def\bcrows{1}
+  \fi
   
   \begin{tikzpicture}[remember picture, overlay, x=1mm, y=1mm, font=\sffamily]
     \begin{scope}[shift={(current page.center)}, 
@@ -423,8 +464,9 @@
       }
     }
     
-    % Crop marks (mandatory)
+    % Crop marks (disabled for 1-up print data)
     \if@bcCropmarks
+    \if@bcOneUp\else
       % Calculate total width and height
       \pgfmathsetmacro\totalwidth{\bccols*91}
       \pgfmathsetmacro\totalheight{\bcrows*55}
@@ -440,6 +482,7 @@
         \draw[black,thin] (-10,\y) -- (-5,\y);
         \draw[black,thin] (\totalwidth+10,\y) -- (\totalwidth+5,\y);
       }
+    \fi
     \fi
     
     \end{scope}
